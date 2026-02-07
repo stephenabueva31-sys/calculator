@@ -1,0 +1,96 @@
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        bool continueProgram = true;
+
+        while (continueProgram)
+        {
+            int firstNumber = GetValidInteger("Enter the first number: ");
+            int secondNumber = GetValidInteger("Enter the second number: ");
+            string operation = GetOperation();
+
+            if (operation == "=")
+            {
+                continueProgram = false;
+                Console.WriteLine("Exiting the program...");
+            }
+            else
+            {
+                var result = PerformOperation(firstNumber, secondNumber, operation);
+                if (result.HasValue)
+                {
+                    Console.WriteLine($"Result: {result.Value}");
+                }
+            }
+        }
+    }
+
+    static int GetValidInteger(string prompt)
+    {
+        int validInteger;
+        while (true)
+        {
+            Console.Write(prompt);
+            string input = Console.ReadLine();
+            if (int.TryParse(input, out validInteger))
+            {
+                return validInteger;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a whole number (integer).");
+            }
+        }
+    }
+
+    static string GetOperation()
+    {
+        string operation;
+        while (true)
+        {
+            Console.WriteLine("Choose an operation: +, -, *, /, %, = (Exit)");
+            operation = Console.ReadLine();
+
+            if (operation == "+" || operation == "-" || operation == "*" || operation == "/" || operation == "%" || operation == "=")
+            {
+                return operation;
+            }
+            else
+            {
+                Console.WriteLine("Incorrect Operation Used, please try again.");
+            }
+        }
+    }
+
+    static double? PerformOperation(int firstNumber, int secondNumber, string operation)
+    {
+        switch (operation)
+        {
+            case "+":
+                return firstNumber + secondNumber;
+            case "-":
+                return firstNumber - secondNumber;
+            case "*":
+                return firstNumber * secondNumber;
+            case "/":
+                if (secondNumber == 0)
+                {
+                    Console.WriteLine("Cannot divide by zero.");
+                    return null;
+                }
+                return (double)firstNumber / secondNumber;
+            case "%":
+                if (secondNumber == 0)
+                {
+                    Console.WriteLine("Cannot modulo by zero.");
+                    return null;
+                }
+                return firstNumber % secondNumber;
+            default:
+                return null;
+        }
+    }
+}
